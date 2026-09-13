@@ -22,6 +22,12 @@ public class QuickChat {
             
             System.out.print("Enter a Password: ");
             String password = input.nextLine();
+                        
+            if (login.checkPasswordComplexity(password)) {
+                System.out.println("Password successfully captured.");
+            } else {
+                System.out.println("Password is not correctly formatted; please ensure that the password contains at least eight characters, a capital letter, a number, and a special character.");
+            }
             
             System.out.print("Enter your cell number: ");
             String cellNumber = input.nextLine();
