@@ -100,4 +100,29 @@ public class Login {
 
         return "User registered successfully.";
     }
+        /**
+     * Verifies that the login details supplied match the details captured
+     * during registration.
+     *
+     * @param username the username entered at login
+     * @param password the password entered at login
+     * @return true if both match the registered details, false otherwise
+     */
+    public boolean loginUser(String username, String password) {
+        return username.equals(registeredUsername)
+                && password.equals(registeredPassword);
+    }
+
+    /**
+     * Returns the message displayed to the user after a login attempt.
+     *
+     * @param loginSuccess whether the login attempt succeeded
+     * @return a welcome message on success, an error message on failure
+     */
+    public String returnLoginStatus(boolean loginSuccess) {
+        if (loginSuccess) {
+            return "Welcome " + firstName + ", " + lastName + " it is great to see you.";
+        }
+        return "Username or password incorrect, please try again.";
+    }
 }

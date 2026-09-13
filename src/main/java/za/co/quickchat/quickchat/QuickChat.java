@@ -29,7 +29,15 @@ public class QuickChat {
 
             System.out.println();
             System.out.println(login.registerUser(firstName, lastName, username, password, cellNumber));
+            System.out.println();
+            System.out.print("Login - username: ");
+            String loginUsername = input.nextLine();
 
+            System.out.print("Login - password: ");
+            String loginPassword = input.nextLine();
+
+            boolean loginSuccess = login.loginUser(loginUsername, loginPassword);
+            System.out.println(login.returnLoginStatus(loginSuccess));
         }
     }
 }
