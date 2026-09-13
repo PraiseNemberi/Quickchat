@@ -11,9 +11,10 @@ public class QuickChat {
 
     public static void main(String[] args) {
         try (Scanner input = new Scanner(System.in)) {
+            Login login = new Login();
             System.out.print("Enter a username: ");
             String username = input.nextLine();
-            if (username.contains("_") && username.length() <=5) {
+            if (login.checkUserName(username)) {
                 System.out.println("Username successfully captured.");
             } else {
                 System.out.println("Username is not correctly formatted; please ensure that your username contains an underscore and is no more than five characters in length.");
