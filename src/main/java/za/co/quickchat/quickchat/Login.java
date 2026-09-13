@@ -7,6 +7,11 @@ package za.co.quickchat.quickchat;
  */
 public class Login {
 
+    private String registeredUsername;
+    private String registeredPassword;
+    private String firstName;
+    private String lastName;
+
     /**
      * Checks that a username contains an underscore and is no more than five
      * characters in length.
@@ -60,5 +65,39 @@ public class Login {
      */
     public boolean checkCellPhoneNumber(String cellNumber) {
         return cellNumber.matches("^\\+27[0-9]{9}$");
+    }
+
+    /**
+     * Registers a user if the username, password and cell phone number all meet
+     * the required formats, and returns the appropriate message.
+     *
+     * @param firstName the user's first name
+     * @param lastName the user's last name
+     * @param username the chosen username
+     * @param password the chosen password
+     * @param cellNumber the user's cell phone number
+     * @return a message describing the outcome of the registration
+     */
+    public String registerUser(String firstName, String lastName,
+            String username, String password, String cellNumber) {
+
+        if (!checkUserName(username)) {
+            return "Username is not correctly formatted; please ensure that your username contains an underscore and is no more than five characters in length.";
+        }
+
+        if (!checkPasswordComplexity(password)) {
+            return "Password is not correctly formatted; please ensure that the password contains at least eight characters, a capital letter, a number, and a special character.";
+        }
+
+        if (!checkCellPhoneNumber(cellNumber)) {
+            return "Cell phone number incorrectly formatted or does not contain international code.";
+        }
+
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.registeredUsername = username;
+        this.registeredPassword = password;
+
+        return "User registered successfully.";
     }
 }
