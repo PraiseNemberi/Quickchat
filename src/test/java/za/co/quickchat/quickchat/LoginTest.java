@@ -6,8 +6,8 @@ import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 /**
- * Unit tests for the Login class, using the test data specified in the
- * PROG5121 Portfolio of Evidence brief.
+ * Unit tests for the Login class, using the test data specified in the PROG5121
+ * Portfolio of Evidence brief.
  *
  * @author Praise Nemberi ST10542243
  */

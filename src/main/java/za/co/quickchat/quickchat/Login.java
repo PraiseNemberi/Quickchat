@@ -100,7 +100,8 @@ public class Login {
 
         return "User registered successfully.";
     }
-        /**
+
+    /**
      * Verifies that the login details supplied match the details captured
      * during registration.
      *
