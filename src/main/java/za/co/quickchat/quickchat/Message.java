@@ -1,5 +1,12 @@
 package za.co.quickchat.quickchat;
 
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import com.google.gson.reflect.TypeToken;
+import java.io.FileReader;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.Random;
 
@@ -13,6 +20,7 @@ public class Message {
 
     private static final int MAX_MESSAGE_LENGTH = 250;
     private static final ArrayList<Message> sentMessages = new ArrayList<>();
+    private static final String STORAGE_FILE = "messages.json";
     private final String messageID;
     private final int messageNumber;
     private final String recipient;
@@ -192,5 +200,53 @@ public class Message {
      */
     public static void clearSentMessages() {
         sentMessages.clear();
+    }
+
+    /**
+     * Stores this message in a JSON file, keeping any messages that were stored
+     * earlier.
+     *
+     * JSON storage approach adapted from the Gson user guide [1].
+     *
+     * [1] Google, "Gson user guide," GitHub. Accessed: Oct. 4, 2026. [Online].
+     * Available: https://github.com/google/gson/blob/main/UserGuide.md
+     *
+     * @return a message confirming the message was stored, or an error message
+     * if it could not be stored
+     */
+    public String storeMessage() {
+        Gson gson = new GsonBuilder().setPrettyPrinting().create();
+        ArrayList<Message> storedMessages = readStoredMessages(gson);
+        storedMessages.add(this);
+
+        try (FileWriter writer = new FileWriter(STORAGE_FILE)) {
+            gson.toJson(storedMessages, writer);
+            return "Message successfully stored.";
+        } catch (IOException e) {
+            return "Message could not be stored: " + e.getMessage();
+        }
+    }
+
+    /**
+     * Reads the messages already saved in the JSON file.
+     *
+     * JSON reading approach adapted from the Gson user guide [1].
+     *
+     * @param gson the Gson object used to read the file
+     * @return the stored messages, or an empty list if there are none yet
+     */
+    private static ArrayList<Message> readStoredMessages(Gson gson) {
+        Type listType = new TypeToken<ArrayList<Message>>() {
+        }.getType();
+
+        try (FileReader reader = new FileReader(STORAGE_FILE)) {
+            ArrayList<Message> existingMessages = gson.fromJson(reader, listType);
+            if (existingMessages != null) {
+                return existingMessages;
+            }
+        } catch (IOException e) {
+            // No file yet, so there are no stored messages to keep.
+        }
+        return new ArrayList<>();
     }
 }
