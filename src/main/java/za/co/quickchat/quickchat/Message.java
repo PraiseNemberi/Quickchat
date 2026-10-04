@@ -1,5 +1,6 @@
 package za.co.quickchat.quickchat;
 
+import java.util.ArrayList;
 import java.util.Random;
 
 /**
@@ -11,6 +12,7 @@ import java.util.Random;
 public class Message {
 
     private static final int MAX_MESSAGE_LENGTH = 250;
+    private static final ArrayList<Message> sentMessages = new ArrayList<>();
     private final String messageID;
     private final int messageNumber;
     private final String recipient;
@@ -122,5 +124,27 @@ public class Message {
         }
         return "Message exceeds 250 characters by "
                 + (length - MAX_MESSAGE_LENGTH) + "; please reduce the size.";
+    }
+
+    /**
+     * Handles the user's choice for what to do with the message: send it,
+     * disregard it or store it. Sent messages are added to the list of sent
+     * messages.
+     *
+     * @param choice 1 to send, 2 to disregard, 3 to store
+     * @return the message confirming what happened to the message
+     */
+    public String sentMessage(int choice) {
+        switch (choice) {
+            case 1:
+                sentMessages.add(this);
+                return "Message successfully sent.";
+            case 2:
+                return "Press 0 to delete the message.";
+            case 3:
+                return "Message successfully stored.";
+            default:
+                return "Invalid option; please choose 1, 2 or 3.";
+        }
     }
 }
