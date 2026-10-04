@@ -150,7 +150,7 @@ public class Message {
             case 2:
                 return "Press 0 to delete the message.";
             case 3:
-                return "Message successfully stored.";
+                return storeMessage();
             default:
                 return "Invalid option; please choose 1, 2 or 3.";
         }
