@@ -55,7 +55,39 @@ public class QuickChat {
 
             System.out.println();
             System.out.println("Welcome to QuickChat.");
+
+            int numMessages = readNumber(input,
+                    "How many messages do you want to enter? ", 1);
         }
 
+    }
+
+    /**
+     * Asks the user for a whole number and keeps asking until a valid number of
+     * at least the minimum is entered.
+     *
+     * @param input the Scanner used to read the keyboard
+     * @param prompt the question shown to the user
+     * @param minimum the smallest number that is accepted
+     * @return the number entered by the user
+     */
+    private static int readNumber(Scanner input, String prompt, int minimum) {
+        int number = 0;
+        boolean validNumber = false;
+
+        while (!validNumber) {
+            System.out.print(prompt);
+            try {
+                number = Integer.parseInt(input.nextLine().trim());
+                if (number >= minimum) {
+                    validNumber = true;
+                } else {
+                    System.out.println("Please enter a number of " + minimum + " or more.");
+                }
+            } catch (NumberFormatException e) {
+                System.out.println("Please enter a whole number.");
+            }
+        }
+        return number;
     }
 }
