@@ -147,4 +147,34 @@ public class Message {
                 return "Invalid option; please choose 1, 2 or 3.";
         }
     }
+    
+    /**
+     * Returns the full details of this message in the order: message ID,
+     * message hash, recipient, message.
+     *
+     * @return the message details
+     */
+    public String getMessageDetails() {
+        return "Message ID: " + messageID
+                + "\nMessage Hash: " + createMessageHash()
+                + "\nRecipient: " + recipient
+                + "\nMessage: " + messageText;
+    }
+
+    /**
+     * Returns the details of every message sent while the program is running.
+     *
+     * @return all sent messages, or a note that none have been sent
+     */
+    public static String printMessages() {
+        if (sentMessages.isEmpty()) {
+            return "No messages have been sent.";
+        }
+
+        StringBuilder allMessages = new StringBuilder();
+        for (Message message : sentMessages) {
+            allMessages.append(message.getMessageDetails()).append("\n\n");
+        }
+        return allMessages.toString().trim();
+    }
 }
