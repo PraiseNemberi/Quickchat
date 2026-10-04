@@ -147,7 +147,7 @@ public class Message {
                 return "Invalid option; please choose 1, 2 or 3.";
         }
     }
-    
+
     /**
      * Returns the full details of this message in the order: message ID,
      * message hash, recipient, message.
@@ -176,5 +176,21 @@ public class Message {
             allMessages.append(message.getMessageDetails()).append("\n\n");
         }
         return allMessages.toString().trim();
+    }
+
+    /**
+     * Returns the total number of messages sent while the program is running.
+     *
+     * @return the number of sent messages
+     */
+    public static int returnTotalMessages() {
+        return sentMessages.size();
+    }
+
+    /**
+     * Empties the list of sent messages so that each unit test starts fresh.
+     */
+    public static void clearSentMessages() {
+        sentMessages.clear();
     }
 }
