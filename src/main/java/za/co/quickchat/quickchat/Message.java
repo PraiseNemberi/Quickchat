@@ -10,6 +10,7 @@ import java.util.Random;
  */
 public class Message {
 
+    private static final int MAX_MESSAGE_LENGTH = 250;
     private final String messageID;
     private final int messageNumber;
     private final String recipient;
@@ -105,5 +106,21 @@ public class Message {
      */
     private String stripPunctuation(String word) {
         return word.replaceAll("[^A-Za-z0-9]", "");
+    }
+
+    /**
+     * Checks that the message is no more than 250 characters long.
+     *
+     * @return a message saying the message is ready to send, or by how many
+     * characters it is too long
+     */
+    public String checkMessageLength() {
+        int length = messageText.length();
+
+        if (length <= MAX_MESSAGE_LENGTH) {
+            return "Message ready to send.";
+        }
+        return "Message exceeds 250 characters by "
+                + (length - MAX_MESSAGE_LENGTH) + "; please reduce the size.";
     }
 }
