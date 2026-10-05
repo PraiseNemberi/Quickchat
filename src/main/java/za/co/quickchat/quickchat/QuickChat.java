@@ -58,8 +58,31 @@ public class QuickChat {
 
             int numMessages = readNumber(input,
                     "How many messages do you want to enter? ", 1);
-        }
 
+            boolean running = true;
+            while (running) {
+                System.out.println();
+                System.out.println("1) Send Messages");
+                System.out.println("2) Show recently sent messages");
+                System.out.println("3) Quit");
+                int choice = readNumber(input, "Choose an option: ", 1);
+
+                switch (choice) {
+                    case 1:
+                        System.out.println("Sending messages is coming in the next step.");
+                        break;
+                    case 2:
+                        System.out.println("Coming Soon.");
+                        break;
+                    case 3:
+                        running = false;
+                        System.out.println("Goodbye.");
+                        break;
+                    default:
+                        System.out.println("Invalid option; please choose 1, 2 or 3.");
+                }
+            }
+        }
     }
 
     /**
