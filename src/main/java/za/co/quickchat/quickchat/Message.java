@@ -21,10 +21,10 @@ public class Message {
     private static final int MAX_MESSAGE_LENGTH = 250;
     private static final ArrayList<Message> sentMessages = new ArrayList<>();
     private static final String STORAGE_FILE = "messages.json";
-    private final String messageID;
-    private final int messageNumber;
-    private final String recipient;
-    private final String messageText;
+    private String messageID;
+    private int messageNumber;
+    private String recipient;
+    private String messageText;
 
     /**
      * Creates a new message.

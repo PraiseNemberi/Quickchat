@@ -108,7 +108,47 @@ public class QuickChat {
 
             Message message = readValidMessage(input, i);
             System.out.println(message.displayMessageID());
-            System.out.println("Message Hash: " + message.createMessageHash());
+            handleMessageChoice(input, message);
+        }
+    }
+
+    /**
+     * Lets the user choose to send, disregard or store a message. A sent
+     * message has its full details displayed, and a disregarded message is only
+     * deleted once the user presses 0.
+     *
+     * @param input the Scanner used to read the keyboard
+     * @param message the message the user is deciding about
+     */
+    private static void handleMessageChoice(Scanner input, Message message) {
+        boolean decided = false;
+
+        while (!decided) {
+            System.out.println();
+            System.out.println("1) Send Message");
+            System.out.println("2) Disregard Message");
+            System.out.println("3) Store Message to send later");
+            int choice = readNumber(input, "Choose an option: ", 1);
+
+            if (choice > 3) {
+                System.out.println("Invalid option; please choose 1, 2 or 3.");
+            } else {
+                System.out.println(message.sentMessage(choice));
+
+                if (choice == 1) {
+                    System.out.println();
+                    System.out.println(message.getMessageDetails());
+                    decided = true;
+                } else if (choice == 2) {
+                    int confirm = readNumber(input, "Enter 0 to confirm: ", 0);
+                    if (confirm == 0) {
+                        System.out.println("Message deleted.");
+                        decided = true;
+                    }
+                } else {
+                    decided = true;
+                }
+            }
         }
     }
 
