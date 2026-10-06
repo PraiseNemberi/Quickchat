@@ -9,6 +9,9 @@ import java.util.Scanner;
  */
 public class QuickChat {
 
+    private static final String RECIPIENT_OK = "Cell phone number successfully captured.";
+    private static final String LENGTH_OK = "Message ready to send.";
+
     public static void main(String[] args) {
         try (Scanner input = new Scanner(System.in)) {
             Login login = new Login();
@@ -58,6 +61,7 @@ public class QuickChat {
 
             int numMessages = readNumber(input,
                     "How many messages do you want to enter? ", 1);
+            boolean messagesEntered = false;
 
             boolean running = true;
             while (running) {
@@ -69,7 +73,12 @@ public class QuickChat {
 
                 switch (choice) {
                     case 1:
-                        System.out.println("Sending messages is coming in the next step.");
+                        if (messagesEntered) {
+                            System.out.println("You have already entered all " + numMessages + " messages.");
+                        } else {
+                            enterMessages(input, numMessages);
+                            messagesEntered = true;
+                        }
                         break;
                     case 2:
                         System.out.println("Coming Soon.");
@@ -83,6 +92,55 @@ public class QuickChat {
                 }
             }
         }
+    }
+
+    /**
+     * Lets the user enter the number of messages they chose at the start, using
+     * a for loop. The loop counter is used as the message number.
+     *
+     * @param input the Scanner used to read the keyboard
+     * @param numMessages how many messages the user wants to enter
+     */
+    private static void enterMessages(Scanner input, int numMessages) {
+        for (int i = 0; i < numMessages; i++) {
+            System.out.println();
+            System.out.println("Message " + (i + 1) + " of " + numMessages);
+
+            Message message = readValidMessage(input, i);
+            System.out.println(message.displayMessageID());
+            System.out.println("Message Hash: " + message.createMessageHash());
+        }
+    }
+
+    /**
+     * Asks for a recipient and a message until both are valid.
+     *
+     * @param input the Scanner used to read the keyboard
+     * @param messageNumber the number of this message, taken from the loop
+     * @return a message with a valid recipient and length
+     */
+    private static Message readValidMessage(Scanner input, int messageNumber) {
+        Message message;
+        boolean valid;
+
+        do {
+            System.out.print("Enter the recipient's cell number: ");
+            String recipient = input.nextLine().trim();
+            System.out.print("Enter your message: ");
+            String text = input.nextLine();
+
+            message = new Message(Message.generateMessageID(), messageNumber,
+                    recipient, text);
+            String recipientResult = message.checkRecipientCell();
+            String lengthResult = message.checkMessageLength();
+            System.out.println(recipientResult);
+            System.out.println(lengthResult);
+
+            valid = recipientResult.equals(RECIPIENT_OK)
+                    && lengthResult.equals(LENGTH_OK);
+        } while (!valid);
+
+        return message;
     }
 
     /**
