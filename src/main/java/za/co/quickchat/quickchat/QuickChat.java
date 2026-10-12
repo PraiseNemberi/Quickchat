@@ -110,6 +110,8 @@ public class QuickChat {
             System.out.println(message.displayMessageID());
             handleMessageChoice(input, message);
         }
+        System.out.println();
+        System.out.println("Total messages sent: " + Message.returnTotalMessages());
     }
 
     /**
