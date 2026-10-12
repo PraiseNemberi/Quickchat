@@ -104,4 +104,60 @@ public class MessageTest {
         Message message = new Message(TEST_ID, 0, MIKE_NUMBER, MIKE_TEXT);
         assertEquals("Message ID generated: 0012345678", message.displayMessageID());
     }
+
+    @Test
+    public void testSendMessage() {
+        Message message = new Message(TEST_ID, 0, MIKE_NUMBER, MIKE_TEXT);
+        assertEquals("Message successfully sent.", message.sentMessage(1));
+    }
+
+    @Test
+    public void testDisregardMessage() {
+        Message message = new Message("0812345678", 1, BAD_NUMBER,
+                "Hi Keegan, did you receive the payment?");
+        assertEquals("Press 0 to delete the message.", message.sentMessage(2));
+    }
+
+    @Test
+    public void testStoreMessage() {
+        Message message = new Message(TEST_ID, 0, MIKE_NUMBER, MIKE_TEXT);
+        assertEquals("Message successfully stored.", message.sentMessage(3));
+    }
+
+    @Test
+    public void testInvalidSendOption() {
+        Message message = new Message(TEST_ID, 0, MIKE_NUMBER, MIKE_TEXT);
+        assertEquals("Invalid option; please choose 1, 2 or 3.", message.sentMessage(9));
+    }
+
+    @Test
+    public void testTotalMessagesCountsOnlySentMessages() {
+        Message sent = new Message(TEST_ID, 0, MIKE_NUMBER, MIKE_TEXT);
+        Message discarded = new Message("0812345678", 1, MIKE_NUMBER,
+                "Hi Keegan, did you receive the payment?");
+
+        sent.sentMessage(1);
+        discarded.sentMessage(2);
+
+        assertEquals(1, Message.returnTotalMessages());
+    }
+
+    @Test
+    public void testNoMessagesSentYet() {
+        assertEquals(0, Message.returnTotalMessages());
+        assertEquals("No messages have been sent.", Message.printMessages());
+    }
+
+    @Test
+    public void testPrintMessagesShowsDetailsInOrder() {
+        Message message = new Message(TEST_ID, 0, MIKE_NUMBER, MIKE_TEXT);
+        message.sentMessage(1);
+
+        assertEquals("""
+                     Message ID: 0012345678
+                     Message Hash: 00:0:HITONIGHT
+                     Recipient: +27718693002
+                     Message: Hi Mike, can you join us for dinner tonight?""",
+                Message.printMessages());
+    }
 }
