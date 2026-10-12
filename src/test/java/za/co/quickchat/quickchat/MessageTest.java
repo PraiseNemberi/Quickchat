@@ -1,6 +1,8 @@
 package za.co.quickchat.quickchat;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -62,5 +64,44 @@ public class MessageTest {
     public void testRecipientIncorrectlyFormatted() {
         Message message = new Message(TEST_ID, 1, BAD_NUMBER, MIKE_TEXT);
         assertEquals(BAD_NUMBER_MESSAGE, message.checkRecipientCell());
+    }
+
+    @Test
+    public void testMessageHashForFirstMessage() {
+        Message message = new Message(TEST_ID, 0, MIKE_NUMBER, MIKE_TEXT);
+        assertEquals("00:0:HITONIGHT", message.createMessageHash());
+    }
+
+    @Test
+    public void testMessageHashesInLoop() {
+        String[] ids = {"0012345678", "0812345678"};
+        String[] texts = {MIKE_TEXT, "Hi Keegan, did you receive the payment?"};
+        String[] expectedHashes = {"00:0:HITONIGHT", "08:1:HIPAYMENT"};
+
+        for (int i = 0; i < ids.length; i++) {
+            Message message = new Message(ids[i], i, MIKE_NUMBER, texts[i]);
+            assertEquals(expectedHashes[i], message.createMessageHash());
+        }
+    }
+
+    @Test
+    public void testGeneratedMessageIDIsTenDigits() {
+        for (int i = 0; i < 20; i++) {
+            String id = Message.generateMessageID();
+            assertTrue(id.matches("[0-9]{10}"));
+            assertTrue(new Message(id, 0, MIKE_NUMBER, MIKE_TEXT).checkMessageID());
+        }
+    }
+
+    @Test
+    public void testMessageIDTooLongFails() {
+        Message message = new Message("00123456789", 0, MIKE_NUMBER, MIKE_TEXT);
+        assertFalse(message.checkMessageID());
+    }
+
+    @Test
+    public void testMessageIDCreated() {
+        Message message = new Message(TEST_ID, 0, MIKE_NUMBER, MIKE_TEXT);
+        assertEquals("Message ID generated: 0012345678", message.displayMessageID());
     }
 }
