@@ -41,6 +41,43 @@ public class Message {
         this.recipient = recipient;
         this.messageText = messageText;
     }
+    
+    /**
+     * Returns the ten-digit ID of this message.
+     *
+     * @return the message ID
+     */
+    public String getMessageID() {
+        return messageID;
+    }
+
+    /**
+     * Returns the number of this message.
+     *
+     * @return the message number
+     */
+    public int getMessageNumber() {
+        return messageNumber;
+    }
+
+    /**
+     * Returns the recipient's cell phone number.
+     *
+     * @return the recipient
+     */
+    public String getRecipient() {
+        return recipient;
+    }
+
+    /**
+     * Returns the text of this message.
+     *
+     * @return the message text
+     */
+    public String getMessageText() {
+        return messageText;
+    }
+    
 
     /**
      * Checks that the message ID is no more than ten characters long.
