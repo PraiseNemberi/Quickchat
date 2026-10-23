@@ -59,6 +59,10 @@ public class QuickChat {
             System.out.println();
             System.out.println("Welcome to QuickChat.");
 
+            MessageManager manager = new MessageManager();
+            System.out.println(manager.loadStoredMessages());
+            String sender = firstName + " " + lastName;
+
             int numMessages = readNumber(input,
                     "How many messages do you want to enter? ", 1);
             boolean messagesEntered = false;
@@ -69,6 +73,7 @@ public class QuickChat {
                 System.out.println("1) Send Messages");
                 System.out.println("2) Show recently sent messages");
                 System.out.println("3) Quit");
+                System.out.println("4) Stored Messages");
                 int choice = readNumber(input, "Choose an option: ", 1);
 
                 switch (choice) {
@@ -76,19 +81,22 @@ public class QuickChat {
                         if (messagesEntered) {
                             System.out.println("You have already entered all " + numMessages + " messages.");
                         } else {
-                            enterMessages(input, numMessages);
+                            enterMessages(input, numMessages, manager);
                             messagesEntered = true;
                         }
                         break;
                     case 2:
-                        System.out.println("Coming Soon.");
+                        System.out.println(Message.printMessages());
                         break;
                     case 3:
                         running = false;
                         System.out.println("Goodbye.");
                         break;
+                    case 4:
+                        storedMessagesMenu(input, manager, sender);
+                        break;
                     default:
-                        System.out.println("Invalid option; please choose 1, 2 or 3.");
+                        System.out.println("Invalid option; please choose 1, 2, 3 or 4.");
                 }
             }
         }
@@ -100,15 +108,18 @@ public class QuickChat {
      *
      * @param input the Scanner used to read the keyboard
      * @param numMessages how many messages the user wants to enter
+     * @param manager the MessageManager that keeps the message arrays
      */
-    private static void enterMessages(Scanner input, int numMessages) {
+    private static void enterMessages(Scanner input, int numMessages,
+            MessageManager manager) {
         for (int i = 0; i < numMessages; i++) {
             System.out.println();
             System.out.println("Message " + (i + 1) + " of " + numMessages);
 
             Message message = readValidMessage(input, i);
             System.out.println(message.displayMessageID());
-            handleMessageChoice(input, message);
+            int choice = handleMessageChoice(input, message);
+            manager.addMessage(message, choice);
         }
         System.out.println();
         System.out.println("Total messages sent: " + Message.returnTotalMessages());
@@ -121,16 +132,18 @@ public class QuickChat {
      *
      * @param input the Scanner used to read the keyboard
      * @param message the message the user is deciding about
+     * @return the option the user finally chose: 1 send, 2 disregard, 3 store
      */
-    private static void handleMessageChoice(Scanner input, Message message) {
+    private static int handleMessageChoice(Scanner input, Message message) {
         boolean decided = false;
+        int choice = 0;
 
         while (!decided) {
             System.out.println();
             System.out.println("1) Send Message");
             System.out.println("2) Disregard Message");
             System.out.println("3) Store Message to send later");
-            int choice = readNumber(input, "Choose an option: ", 1);
+            choice = readNumber(input, "Choose an option: ", 1);
 
             if (choice > 3) {
                 System.out.println("Invalid option; please choose 1, 2 or 3.");
@@ -150,6 +163,64 @@ public class QuickChat {
                 } else {
                     decided = true;
                 }
+            }
+        }
+        return choice;
+    }
+
+    /**
+     * Shows the Stored Messages menu and runs the option the user picks until
+     * they choose to go back to the main menu.
+     *
+     * @param input the Scanner used to read the keyboard
+     * @param manager the MessageManager that keeps the message arrays
+     * @param sender the full name of the logged-in user
+     */
+    private static void storedMessagesMenu(Scanner input, MessageManager manager,
+            String sender) {
+        boolean inMenu = true;
+
+        while (inMenu) {
+            System.out.println();
+            System.out.println("Stored Messages");
+            System.out.println("1) Display the sender and recipient of all stored messages");
+            System.out.println("2) Display the longest stored message");
+            System.out.println("3) Search for a message ID");
+            System.out.println("4) Search for all messages to a recipient");
+            System.out.println("5) Delete a message using the message hash");
+            System.out.println("6) Display a report of all messages");
+            System.out.println("7) Back to main menu");
+            int choice = readNumber(input, "Choose an option: ", 1);
+            System.out.println();
+
+            switch (choice) {
+                case 1:
+                    System.out.println(manager.displaySendersAndRecipients(sender));
+                    break;
+                case 2:
+                    System.out.println(manager.getLongestMessage());
+                    break;
+                case 3:
+                    System.out.print("Enter the message ID: ");
+                    System.out.println(manager.searchByMessageID(input.nextLine().trim()));
+                    break;
+                case 4:
+                    System.out.print("Enter the recipient's cell number: ");
+                    System.out.println(manager.searchByRecipient(input.nextLine().trim()));
+                    break;
+                case 5:
+                    System.out.print("Enter the message hash: ");
+                    System.out.println(manager.deleteByMessageHash(input.nextLine().trim()));
+                    Message.saveStoredMessages(manager.getStoredMessages());
+                    break;
+                case 6:
+                    System.out.println(manager.displayReport());
+                    break;
+                case 7:
+                    inMenu = false;
+                    break;
+                default:
+                    System.out.println("Invalid option; please choose 1 to 7.");
             }
         }
     }

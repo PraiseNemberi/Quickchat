@@ -43,6 +43,42 @@ public class Message {
     }
 
     /**
+     * Returns the ten-digit ID of this message.
+     *
+     * @return the message ID
+     */
+    public String getMessageID() {
+        return messageID;
+    }
+
+    /**
+     * Returns the number of this message.
+     *
+     * @return the message number
+     */
+    public int getMessageNumber() {
+        return messageNumber;
+    }
+
+    /**
+     * Returns the recipient's cell phone number.
+     *
+     * @return the recipient
+     */
+    public String getRecipient() {
+        return recipient;
+    }
+
+    /**
+     * Returns the text of this message.
+     *
+     * @return the message text
+     */
+    public String getMessageText() {
+        return messageText;
+    }
+
+    /**
      * Checks that the message ID is no more than ten characters long.
      *
      * @return true if the message ID is valid, false otherwise
@@ -224,6 +260,38 @@ public class Message {
             return "Message successfully stored.";
         } catch (IOException e) {
             return "Message could not be stored: " + e.getMessage();
+        }
+    }
+
+    /**
+     * Reads every message saved in the JSON file so that it can be placed in
+     * the stored messages array.
+     *
+     * JSON reading approach adapted from the Gson user guide [1].
+     *
+     * @return the stored messages, or an empty list if there are none yet
+     */
+    public static ArrayList<Message> loadStoredMessages() {
+        return readStoredMessages(new Gson());
+    }
+
+    /**
+     * Replaces the contents of the JSON file with the messages given, so that a
+     * deleted message is also removed from the file.
+     *
+     * JSON storage approach adapted from the Gson user guide [1].
+     *
+     * @param messages the stored messages to keep
+     * @return a message confirming the file was updated, or an error message
+     */
+    public static String saveStoredMessages(ArrayList<Message> messages) {
+        Gson gson = new GsonBuilder().setPrettyPrinting().create();
+
+        try (FileWriter writer = new FileWriter(STORAGE_FILE)) {
+            gson.toJson(messages, writer);
+            return "Stored messages file updated.";
+        } catch (IOException e) {
+            return "Stored messages file could not be updated: " + e.getMessage();
         }
     }
 
