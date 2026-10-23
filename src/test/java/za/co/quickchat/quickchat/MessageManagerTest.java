@@ -76,4 +76,17 @@ public class MessageManagerTest {
         String[] expected = {"0012345678", "1112345678", "0838884567", "4412345678"};
         assertArrayEquals(expected, manager.getMessageIDs());
     }
+
+    @Test
+    public void testDisplayLongestMessage() {
+        assertEquals("Where are you? You are late! I have asked you to be on time.",
+                manager.getLongestMessage());
+    }
+
+    @Test
+    public void testDisplaySendersAndRecipients() {
+        assertEquals("Sender: Kyle Smith | Recipient: +27838884567\n"
+                + "Sender: Kyle Smith | Recipient: +27838884567",
+                manager.displaySendersAndRecipients("Kyle Smith"));
+    }
 }
