@@ -62,6 +62,20 @@ public class MessageManager {
     public String[] getSentMessages() {
         return toTextArray(sentMessages);
     }
+        /**
+     * Reads the messages saved in the JSON file into the stored messages
+     * array.
+     *
+     * @return a message saying how many stored messages were loaded
+     */
+    public String loadStoredMessages() {
+        ArrayList<Message> fileMessages = Message.loadStoredMessages();
+
+        for (Message message : fileMessages) {
+            addMessage(message, STORE);
+        }
+        return fileMessages.size() + " stored message(s) loaded.";
+    }
 
     /**
      * Returns the text of every disregarded message.

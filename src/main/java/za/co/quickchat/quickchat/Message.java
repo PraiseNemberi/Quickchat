@@ -41,7 +41,7 @@ public class Message {
         this.recipient = recipient;
         this.messageText = messageText;
     }
-    
+
     /**
      * Returns the ten-digit ID of this message.
      *
@@ -77,7 +77,6 @@ public class Message {
     public String getMessageText() {
         return messageText;
     }
-    
 
     /**
      * Checks that the message ID is no more than ten characters long.
@@ -262,6 +261,18 @@ public class Message {
         } catch (IOException e) {
             return "Message could not be stored: " + e.getMessage();
         }
+    }
+
+    /**
+     * Reads every message saved in the JSON file so that it can be placed in
+     * the stored messages array.
+     *
+     * JSON reading approach adapted from the Gson user guide [1].
+     *
+     * @return the stored messages, or an empty list if there are none yet
+     */
+    public static ArrayList<Message> loadStoredMessages() {
+        return readStoredMessages(new Gson());
     }
 
     /**
