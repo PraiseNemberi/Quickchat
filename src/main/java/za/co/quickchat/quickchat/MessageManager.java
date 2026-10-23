@@ -155,6 +155,46 @@ public class MessageManager {
     }
 
     /**
+     * Searches the message ID array and shows the matching recipient and
+     * message.
+     *
+     * @param messageID the ID to search for
+     * @return the recipient and message, or a note that the ID was not found
+     */
+    public String searchByMessageID(String messageID) {
+        for (int i = 0; i < messageIDs.size(); i++) {
+            if (messageIDs.get(i).equals(messageID)) {
+                Message found = messages.get(i);
+                return "Recipient: " + found.getRecipient()
+                        + "\nMessage: " + found.getMessageText();
+            }
+        }
+        return "Message ID " + messageID + " was not found.";
+    }
+
+    /**
+     * Searches for every sent or stored message going to one recipient.
+     *
+     * @param recipient the recipient's cell number
+     * @return each matching message on its own line, or a note that none were
+     * found
+     */
+    public String searchByRecipient(String recipient) {
+        StringBuilder result = new StringBuilder();
+
+        for (Message message : messages) {
+            if (message.getRecipient().equals(recipient)) {
+                result.append(message.getMessageText()).append("\n");
+            }
+        }
+
+        if (result.length() == 0) {
+            return "No messages found for " + recipient + ".";
+        }
+        return result.toString().trim();
+    }
+
+    /**
      * Copies the text of each message in a list into a String array.
      *
      * @param list the messages to copy
