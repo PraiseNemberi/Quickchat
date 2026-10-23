@@ -131,4 +131,38 @@ public class MessageManagerTest {
                 manager.deleteByMessageHash("99:9:NOTHERE"));
         assertEquals(4, manager.getMessageHashes().length);
     }
+
+    @Test
+    public void testDisplayReport() {
+        assertEquals("""
+                     QuickChat Message Report
+
+                     Message ID: 0012345678
+                     Message Hash: 00:0:DIDCAKE
+                     Recipient: +27834557896
+                     Message: Did you get the cake?
+
+                     Message ID: 1112345678
+                     Message Hash: 11:1:WHERETIME
+                     Recipient: +27838884567
+                     Message: Where are you? You are late! I have asked you to be on time.
+
+                     Message ID: 0838884567
+                     Message Hash: 08:3:ITTIME
+                     Recipient: 0838884567
+                     Message: It is dinner time!
+
+                     Message ID: 4412345678
+                     Message Hash: 44:4:OKYOU
+                     Recipient: +27838884567
+                     Message: Ok, I am leaving without you.""",
+                manager.displayReport());
+    }
+
+    @Test
+    public void testEmptyManagerMessages() {
+        MessageManager empty = new MessageManager();
+        assertEquals("There are no stored messages.", empty.getLongestMessage());
+        assertEquals("There are no messages to report.", empty.displayReport());
+    }
 }
