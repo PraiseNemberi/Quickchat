@@ -55,6 +55,46 @@ public class MessageManager {
     }
 
     /**
+     * Lists the sender and recipient of every stored message.
+     *
+     * @param sender the name of the logged-in user who wrote the messages
+     * @return one line per stored message, or a note that there are none
+     */
+    public String displaySendersAndRecipients(String sender) {
+        if (storedMessages.isEmpty()) {
+            return "There are no stored messages.";
+        }
+
+        StringBuilder result = new StringBuilder();
+        for (Message message : storedMessages) {
+            result.append("Sender: ").append(sender)
+                    .append(" | Recipient: ").append(message.getRecipient())
+                    .append("\n");
+        }
+        return result.toString().trim();
+    }
+
+    /**
+     * Finds the longest stored message.
+     *
+     * @return the text of the longest stored message, or a note that there are
+     * none
+     */
+    public String getLongestMessage() {
+        if (storedMessages.isEmpty()) {
+            return "There are no stored messages.";
+        }
+
+        Message longest = storedMessages.get(0);
+        for (Message message : storedMessages) {
+            if (message.getMessageText().length() > longest.getMessageText().length()) {
+                longest = message;
+            }
+        }
+        return longest.getMessageText();
+    }
+
+    /**
      * Returns the text of every sent message.
      *
      * @return an array of sent message texts
@@ -62,9 +102,9 @@ public class MessageManager {
     public String[] getSentMessages() {
         return toTextArray(sentMessages);
     }
-        /**
-     * Reads the messages saved in the JSON file into the stored messages
-     * array.
+
+    /**
+     * Reads the messages saved in the JSON file into the stored messages array.
      *
      * @return a message saying how many stored messages were loaded
      */
