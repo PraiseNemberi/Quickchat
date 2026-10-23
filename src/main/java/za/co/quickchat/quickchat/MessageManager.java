@@ -118,26 +118,6 @@ public class MessageManager {
     }
 
     /**
-     * // * Replaces the contents of the JSON file with the messages given, so
-     * that a deleted message is also removed from the file.
-     *
-     * JSON storage approach adapted from the Gson user guide [1].
-     *
-     * @param messages the stored messages to keep
-     * @return a message confirming the file was updated, or an error message
-     */
-    public static String saveStoredMessages(ArrayList<Message> messages) {
-        Gson gson = new GsonBuilder().setPrettyPrinting().create();
-
-        try (FileWriter writer = new FileWriter(STORAGE_FILE)) {
-            gson.toJson(messages, writer);
-            return "Stored messages file updated.";
-        } catch (IOException e) {
-            return "Stored messages file could not be updated: " + e.getMessage();
-        }
-    }
-
-    /**
      * Returns the text of every disregarded message.
      *
      * @return an array of disregarded message texts
