@@ -114,4 +114,21 @@ public class MessageManagerTest {
         assertEquals("No messages found for +27000000000.",
                 manager.searchByRecipient("+27000000000"));
     }
+
+    @Test
+    public void testDeleteMessageUsingHash() {
+        assertEquals("Message: \"Where are you? You are late! I have asked you to be on time.\" successfully deleted.",
+                manager.deleteByMessageHash("11:1:WHERETIME"));
+
+        assertArrayEquals(new String[]{"00:0:DIDCAKE", "08:3:ITTIME", "44:4:OKYOU"},
+                manager.getMessageHashes());
+        assertEquals(1, manager.getStoredMessages().size());
+    }
+
+    @Test
+    public void testDeleteMessageHashNotFound() {
+        assertEquals("Message hash 99:9:NOTHERE was not found.",
+                manager.deleteByMessageHash("99:9:NOTHERE"));
+        assertEquals(4, manager.getMessageHashes().length);
+    }
 }
