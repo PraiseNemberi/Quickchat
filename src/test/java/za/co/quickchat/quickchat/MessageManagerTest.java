@@ -89,4 +89,29 @@ public class MessageManagerTest {
                 + "Sender: Kyle Smith | Recipient: +27838884567",
                 manager.displaySendersAndRecipients("Kyle Smith"));
     }
+
+    @Test
+    public void testSearchForMessageID() {
+        assertEquals("Recipient: 0838884567\nMessage: It is dinner time!",
+                manager.searchByMessageID("0838884567"));
+    }
+
+    @Test
+    public void testSearchForMessageIDNotFound() {
+        assertEquals("Message ID 9999999999 was not found.",
+                manager.searchByMessageID("9999999999"));
+    }
+
+    @Test
+    public void testSearchMessagesForRecipient() {
+        assertEquals("Where are you? You are late! I have asked you to be on time.\n"
+                + "Ok, I am leaving without you.",
+                manager.searchByRecipient("+27838884567"));
+    }
+
+    @Test
+    public void testSearchMessagesForRecipientNotFound() {
+        assertEquals("No messages found for +27000000000.",
+                manager.searchByRecipient("+27000000000"));
+    }
 }

@@ -195,6 +195,30 @@ public class MessageManager {
     }
 
     /**
+     * Deletes a message by searching the message hash array. The message is
+     * removed from the parallel arrays and from the sent or stored array.
+     *
+     * @param messageHash the hash of the message to delete
+     * @return a message confirming the deletion, or a note that the hash was
+     * not found
+     */
+    public String deleteByMessageHash(String messageHash) {
+        for (int i = 0; i < messageHashes.size(); i++) {
+            if (messageHashes.get(i).equalsIgnoreCase(messageHash)) {
+                Message removed = messages.remove(i);
+                messageIDs.remove(i);
+                messageHashes.remove(i);
+                sentMessages.remove(removed);
+                storedMessages.remove(removed);
+
+                return "Message: \"" + removed.getMessageText()
+                        + "\" successfully deleted.";
+            }
+        }
+        return "Message hash " + messageHash + " was not found.";
+    }
+
+    /**
      * Copies the text of each message in a list into a String array.
      *
      * @param list the messages to copy
